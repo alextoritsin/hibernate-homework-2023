@@ -1,9 +1,8 @@
 package ru.hh.school.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 //TODO: оформите entity
 @Entity
@@ -19,27 +18,37 @@ public class Resume {
   // https://vladmihalcea.com/from-jpa-to-hibernates-legacy-and-enhanced-identifier-generators/
 
   @Id
-  @GeneratedValue(generator = "sequence-generator")
-  @GenericGenerator(
-          name = "sequence-generator",
-          strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-          parameters = {
-                  @Parameter(name = "sequence_name", value = "resume_id_seq"),
-                  @Parameter(name = "initial_value", value = "1"),
-                  @Parameter(name = "increment_size", value = "10")
-          }
-  )
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "resume_id_seq")
+  @SequenceGenerator(name = "resume_id_seq", allocationSize = 10)
   private Integer id;
 
-
-  @Basic
+  @Column(name = "description")
   private String description;
 
-  @Deprecated
   public Resume() {}
 
   public Resume(String description) {
     this.description = description;
   }
 
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Resume resume = (Resume) o;
+    return id.equals(resume.id) && Objects.equals(description, resume.description);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, description);
+  }
 }

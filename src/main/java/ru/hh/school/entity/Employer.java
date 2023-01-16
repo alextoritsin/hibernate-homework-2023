@@ -1,6 +1,13 @@
 package ru.hh.school.entity;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,17 +67,19 @@ public class Employer {
   //
   // https://vladmihalcea.com/hibernate-facts-equals-and-hashcode/
   // https://docs.jboss.org/hibernate/orm/5.3/userguide/html_single/Hibernate_User_Guide.html#mapping-model-pojo-equalshashcode
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Employer employer = (Employer) o;
-    return Objects.equals(companyName, employer.companyName);
+    return id.equals(employer.id) &&
+            companyName.equals(employer.companyName) &&
+            creationTime.equals(employer.creationTime);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(companyName);
+    return Objects.hash(id, companyName, creationTime);
   }
-
 }

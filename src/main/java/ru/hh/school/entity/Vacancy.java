@@ -1,6 +1,15 @@
 package ru.hh.school.entity;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -102,12 +111,16 @@ public class Vacancy {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Vacancy vacancy = (Vacancy) o;
-    return Objects.equals(id, vacancy.id);
+    return id.equals(vacancy.id) &&
+            employer.equals(vacancy.employer) &&
+            area.equals(vacancy.area) && title.equals(vacancy.title) &&
+            Objects.equals(description, vacancy.description) &&
+            creationTime.equals(vacancy.creationTime);
   }
 
   @Override
   public int hashCode() {
-    return 17;
+    return Objects.hash(id, employer, area,
+            title, description, creationTime);
   }
-
 }
