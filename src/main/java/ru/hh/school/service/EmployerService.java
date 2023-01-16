@@ -1,5 +1,8 @@
 package ru.hh.school.service;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import ru.hh.school.DbFactory;
 import ru.hh.school.util.TransactionHelper;
 import ru.hh.school.dao.EmployerDao;
 import ru.hh.school.dao.GenericDao;
@@ -69,7 +72,9 @@ public class EmployerService {
     transactionHelper.inTransaction(() -> {
       employer.setBlockTime(LocalDateTime.now());
       employer.getVacancies().forEach(v -> v.setArchivingTime(LocalDateTime.now()));
+      employerDao.save(employer);
     });
+
   }
 
   // долгая и важная логика, которую нельзя делать в транзакции
