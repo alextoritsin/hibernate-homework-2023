@@ -69,7 +69,9 @@ public class EmployerService {
     transactionHelper.inTransaction(() -> {
       employer.setBlockTime(LocalDateTime.now());
       employer.getVacancies().forEach(v -> v.setArchivingTime(LocalDateTime.now()));
+      employerDao.save(employer);
     });
+
   }
 
   // долгая и важная логика, которую нельзя делать в транзакции
